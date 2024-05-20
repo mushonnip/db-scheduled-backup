@@ -24,11 +24,6 @@ jobs:
         with:
           command: build
           args: --release
-      
-      - name: Delete existing tag
-        run: |
-          git tag -d main-release
-          git push origin :refs/tags/main-release
 
       - name: Create Release
         id: create_release
