@@ -1,0 +1,4 @@
+[database]
+db_name = "coba"
+db_username = "postgresql"
+db_container_name = "devilbox-pgsql-1"
