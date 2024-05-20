@@ -55,9 +55,9 @@ fn remove_previous_backup(file_name_now: &str) {
     }
 }
 fn main() {
-    let expression = "0/5 * * * * *"; // every 5 seconds
+    // let expression = "0/5 * * * * *"; // every 5 seconds
 
-    // let expression = "0 30 0 * * *"; // daily at 00:30
+    let expression = "0 30 0 * * *"; // daily at 00:30
     let schedule = Schedule::from_str(expression).expect("Failed to parse CRON expression");
 
     // println!("Upcoming fire times:");
