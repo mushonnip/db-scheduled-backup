@@ -42,41 +42,50 @@ setup_systemd() {
     WORKING_DIRECTORY="$HOME/db-scheduled-backup"
 
     SERVICE_CONTENT="[Unit]
-    Description=${SERVICE_DESCRIPTION}
-    After=network.target
+Description=${SERVICE_DESCRIPTION}
+After=network.target
 
-    [Service]
-    ExecStart=${SCRIPT_PATH}
-    WorkingDirectory=${WORKING_DIRECTORY}
-    Restart=always
+[Service]
+ExecStart=${SCRIPT_PATH}
+WorkingDirectory=${WORKING_DIRECTORY}
+Restart=always
 
-    [Install]
-    WantedBy=multi-user.target
-    "
+[Install]
+WantedBy=multi-user.target
+"
 
     SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
 
+    echo "Creating service file: ${SERVICE_FILE}"
     echo "$SERVICE_CONTENT" | sudo tee "$SERVICE_FILE" > /dev/null
     sudo chmod 644 "$SERVICE_FILE"
     sudo systemctl daemon-reload
-    sudo systemctl enable "$SERVICE_NAME" --now
 }
 
 download_and_install() {
-  local arch archive_url install_dir app_name
+  local arch archive_url exec_file app_name config_url
 
   app_name="db-scheduled-backup"
 
   arch="$(detect_arch)" || abort "Sorry! we currently only provides pre-built binaries for x86_64 architectures."
 
+  # Download binary
   archive_url="https://github.com/mushonnip/db-scheduled-backup/releases/download/main-release/db-scheduled-backup"
 
-  install_dir="$HOME/$app_name"
+  mkdir -p "$HOME/$app_name"
+  exec_file="$HOME/$app_name/$app_name"
 
-  download "$archive_url" > $install_dir || return 1
-  chmod +x "$install_dir/$app_name"
+  download "$archive_url" > "$exec_file" || return 1
+  chmod +x "$exec_file"
 
-  setup_systemd || return 0
+  # Download config
+  config_url="https://raw.githubusercontent.com/mushonnip/db-scheduled-backup/main/Config.toml.example"
+
+  download "$config_url" > "$HOME/$app_name/Config.toml"
+
+  mkdir -p "$HOME/$app_name/file"
+
+  setup_systemd || abort "Failed to setup systemd service!"
 }
 
 download_and_install || abort "Install Error!"
