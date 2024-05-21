@@ -25,7 +25,7 @@ jobs:
           command: build
           args: --release
 
-        - name: Check if Tag Exists
+      - name: Check if Tag Exists
         id: check_tag
         run: |
           if git rev-parse --quiet --verify "refs/tags/main-release" >/dev/null; then
