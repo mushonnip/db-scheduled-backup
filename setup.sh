@@ -70,7 +70,7 @@ download_and_install() {
   arch="$(detect_arch)" || abort "Sorry! we currently only provides pre-built binaries for x86_64 architectures."
 
   # Download binary
-  archive_url="https://github.com/mushonnip/db-scheduled-backup/releases/download/main-release/db-scheduled-backup"
+  archive_url="https://github.com/mushonnip/db-scheduled-backup/releases/latest/download/db-scheduled-backup"
 
   mkdir -p "$HOME/$app_name"
   exec_file="$HOME/$app_name/$app_name"
