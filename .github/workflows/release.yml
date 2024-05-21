@@ -25,25 +25,8 @@ jobs:
           command: build
           args: --release
 
-      - name: Check if Tag Exists
-        id: check_tag
-        run: |
-          if git rev-parse --quiet --verify "refs/tags/main-release" >/dev/null; then
-            echo "tag_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "tag_exists=false" >> $GITHUB_OUTPUT
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete Existing Tag
-        id: delete_tag
-        if: steps.check_tag.outputs.tag_exists == 'true'
-        run: |
-          git tag -d main-release
-          git push origin :refs/tags/main-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set CARGO_PKG_VERSION
+        run: echo "CARGO_PKG_VERSION=$(cat Cargo.toml | grep -oP '(?<=version = ")[^"]+')" >> $GITHUB_ENV
 
       - name: Create Release
         id: create_release
@@ -51,8 +34,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: main-release
-          release_name: Main Release
+          tag_name: v${{ env.CARGO_PKG_VERSION }}
+          release_name: Release ${{ env.CARGO_PKG_VERSION }}
           draft: false
           prerelease: false
 
