@@ -29,9 +29,9 @@ jobs:
         id: check_tag
         run: |
           if git rev-parse --quiet --verify "refs/tags/main-release" >/dev/null; then
-            echo "::set-output name=tag_exists::true"
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=tag_exists::false"
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
