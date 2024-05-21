@@ -5,6 +5,7 @@ use std::{fs, process::exit};
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub database: Database,
+    pub cron: Option<Cron>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -12,6 +13,11 @@ pub struct Database {
     pub db_name: String,
     pub db_username: String,
     pub db_container_name: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Cron {
+    pub expression: String,
 }
 
 pub fn get_config() -> Config {

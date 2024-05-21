@@ -55,15 +55,22 @@ fn remove_previous_backup(file_name_now: &str) {
     }
 }
 fn main() {
-    // let expression = "0/5 * * * * *"; // every 5 seconds
+    let config = app::config::get_config();
 
-    let expression = "0 30 0 * * *"; // daily at 00:30
-    let schedule = Schedule::from_str(expression).expect("Failed to parse CRON expression");
+    // let expression = String::from("0/5 * * * * *"); // every 5 seconds
+    let expression = config
+        .cron
+        .map(|cron| cron.expression)
+        .unwrap_or_else(|| String::from("0 30 0 * * *")); // dafault is daily at 00:30
 
-    // println!("Upcoming fire times:");
-    // for datetime in schedule.upcoming(Local).take(10) {
-    //     println!("-> {}", datetime);
-    // }
+    println!("Using cron expression: {}", expression);
+    let schedule =
+        Schedule::from_str(expression.as_str()).expect("Failed to parse CRON expression");
+
+    println!("Upcoming fire times:");
+    for datetime in schedule.upcoming(Local).take(5) {
+        println!("-> {}", datetime);
+    }
 
     loop {
         let now = Local::now();
