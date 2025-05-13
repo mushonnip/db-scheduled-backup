@@ -81,7 +81,9 @@ download_and_install() {
   # Download config
   config_url="https://raw.githubusercontent.com/mushonnip/db-scheduled-backup/main/Config.toml.example"
 
-  download "$config_url" > "$HOME/$app_name/Config.toml"
+  if [ ! -f "$HOME/$app_name/Config.toml" ]; then
+    download "$config_url" > "$HOME/$app_name/Config.toml"
+  fi
 
   mkdir -p "$HOME/$app_name/file"
 

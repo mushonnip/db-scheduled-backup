@@ -2,3 +2,16 @@
 db_name = "coba"
 db_username = "postgresql"
 db_container_name = "devilbox-pgsql-1"
+
+[cron]
+expression = "0 30 0 * * *"
+
+[storage]
+media = "ftp"
+
+[storage.ftp]
+host = "ftp.example.com"
+port = 21
+username = "user"
+password = "pass"
+path = "/path/to/backup"
