@@ -1,7 +1,7 @@
 pub mod ftp;
 pub mod s3;
 
-use crate::app::config::{Ftp, S3, Storage};
+use crate::app::config::Storage;
 
 pub fn upload_backup(storage: &Storage, file_path: &str, file_name: &str) -> bool {
     match storage.media.as_str() {

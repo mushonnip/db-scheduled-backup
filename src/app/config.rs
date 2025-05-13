@@ -39,6 +39,7 @@ pub struct Ftp {
 
 #[derive(Debug, Deserialize)]
 pub struct S3 {
+    pub endpoint: String,
     pub access_key: String,
     pub secret_key: String,
     pub bucket: String,

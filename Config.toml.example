@@ -7,6 +7,7 @@ db_container_name = "devilbox-pgsql-1"
 expression = "0 30 0 * * *"
 
 [storage]
+# Choose either "ftp" or "s3" for storage media
 media = "ftp"
 
 [storage.ftp]
@@ -15,3 +16,11 @@ port = 21
 username = "user"
 password = "pass"
 path = "/path/to/backup"
+
+# Uncomment and configure the following section when using S3/MinIO storage
+# [storage.s3]
+# endpoint = "http://minio-server:9000"
+# access_key = "minioadmin"
+# secret_key = "minioadmin"
+# bucket = "backups"
+# path = "/database-backups"
